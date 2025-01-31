@@ -23,7 +23,7 @@
           <ul class="nav-links">
             {% if current_user.username %}
               <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-              <li><a href="">Create</a>
+              <li><a href="{{ url_for('tasks.create_task') }}">Create</a>
             {% else %}
               <li><a href="{{ url_for('home') }}">Home</a>
               <li><a href="{{ url_for('auth.register') }}">Register</a>

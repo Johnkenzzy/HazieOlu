@@ -1,20 +1,17 @@
 """Application initialization module"""
 import os
 from flask import Flask, render_template, jsonify, request, session
-from models import Base
-from models import User
-from models import Task
-from models import db
+from models import Base, User, Task, db
 from datetime import timedelta
 
 
 user = os.getenv('USER', 'default_usr')
 psswd = os.getenv('PWD', 'default_pwd')
 host = os.getenv('HOST', 'localhost')
-dbase = os.getenv('DB', 'default_db)'
+dbase = os.getenv('DB', 'default_db')
 
 # App initialization and configuration
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=7)
@@ -27,9 +24,18 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-from auth import login_manager, auth
+from routes import login_manager, auth
 login_manager.init_app(app)
 app.register_blueprint(auth, url_prefix='/auth')
+
+from routes import users
+app.register_blueprint(users, url_prefix='/users')
+
+from routes import tasks
+app.register_blueprint(tasks, url_prefix='/tasks')
+
+
+@app.route('/', methods=('GET', 'POST'))
 
 
 @app.route('/', methods=('GET', 'POST'))

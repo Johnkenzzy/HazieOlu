@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ current_user.username }}'s profile{% endblock %}</h1>
+{% endblock %}
+
+{% block  content %}
+  <!-- <h1>WELCOME TO YOUR PROFILE {{current_user.username}}</h1> -->
+  <hr>
+  <h1>Available tasks</h1>
+  {% if not tasks %}
+    <p>No task added yet, add some</p> 
+  {% endif %}
+  {% for task in tasks %}
+    <article class="task">
+      <header>
+        <div>
+          <h1>{{ task.title }}</h1>
+          <div class="about">Created on {{ task.created_at.strftime('%Y-%m-%d') }}</div>
+        </div>
+      </header>
+      <p class="priority">{{ task.priority }}</p>
+      <p class="deadline">{{ task.deadline }}</p>
+      <p class="completed">{{ task.completed }}</p>
+      {% if task.description %}
+        <p class="description">{{ task.description }}</p>
+      {% endif %}
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock  %}
