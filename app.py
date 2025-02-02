@@ -36,9 +36,6 @@ app.register_blueprint(tasks, url_prefix='/tasks')
 
 
 @app.route('/', methods=('GET', 'POST'))
-
-
-@app.route('/', methods=('GET', 'POST'))
 def home():
     if request.method == 'POST':
         data = request.get_json()
