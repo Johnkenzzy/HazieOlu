@@ -16,29 +16,27 @@
 
       <!-- Priority -->
       <div class="form-group">
-        <label for="priority">Priority</label>
-        <label>
-            <input type="radio" id="priority" name="priority" value="Low"> Low
-        </label>
-        <label>
-            <input type="radio" id="priority" name="priority" value="Medium"> Medium
-        </label>
-        <label>
-            <input type="radio" id="priority" name="priority" value="High"> High
-        </label>
+        <label>Priority</label>
+        <div class="priority-group">
+          <input type="radio" id="priority-low" name="priority" value="Low">
+          <label for="priority-low">Low</label>
+
+          <input type="radio" id="priority-medium" name="priority" value="Medium">
+          <label for="priority-medium">Medium</label>
+
+          <input type="radio" id="priority-high" name="priority" value="High">
+          <label for="priority-high">High</label>
+        </div>
       </div>
 
-      <!-- Deadline -->
-      <div class="form-group">
+      <!-- Deadline Date & Time -->
+      <div class="form-group date-time-group">
         <label for="deadline">Deadline</label>
-        <input type="date" id="deadline" name="deadline" placeholder="Enter task deadline" required>
+        <div class="date-time-container">
+            <input type="datetime-local" id="deadline" name="deadline" required>
+            <i class="fa-solid fa-calendar"></i>
+        </div>
       </div>
-
-      <!-- Completed -->
-      <!-- <div class="form-group">
-        <label for="confirm_password">Confirm Password</label>
-        <input type="confirm_password" id="comfirm_password" name="confirm_password" placeholder="Confirm password" required>
-      </div> -->
 
       <!-- Description -->
       <div class="form-group">

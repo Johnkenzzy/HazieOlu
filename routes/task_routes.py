@@ -1,8 +1,10 @@
 """This module defines tasks blueprint"""
+import uuid
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from models import Task, db
 from datetime import datetime
+
 
 tasks = Blueprint('tasks', __name__)
 
@@ -19,7 +21,7 @@ def create_task():
                 title=title,
                 description=description,
                 priority=priority,
-                deadline=datetime.strptime(deadline, '%Y-%m-%d') if deadline else None,
+                deadline=datetime.strptime(deadline, '%Y-%m-%dT%H:%M') if deadline else None,
                 user_id=current_user.id
                 )
         db.session.add(task)
@@ -52,10 +54,11 @@ def update_task():
 
 
 
-@tasks.route('/delete/<int:id>', methods=('POST', ))
+@tasks.route('/delete/<task_id>', methods=('GET', ))
 @login_required
-def delete_task(id):
-    task = Task.query.get_or_404(id)
+def delete_task(task_id):
+    task_id = uuid.UUID(task_id)
+    task = Task.query.get_or_404(task_id)
     if task.owner != current_user:
         abort(403)
     db.session.delete(task)

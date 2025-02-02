@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block style %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='taskcard.css') }}">
+{% endblock %}
+
 {% block header %}
   <h1>{% block title %}{{ current_user.username }}'s profile{% endblock %}</h1>
 {% endblock %}
@@ -12,20 +16,72 @@
     <p>No task added yet, add some</p> 
   {% endif %}
   {% for task in tasks %}
-    <article class="task">
-      <header>
-        <div>
-          <h1>{{ task.title }}</h1>
-          <div class="about">Created on {{ task.created_at.strftime('%Y-%m-%d') }}</div>
+    <div class="task-container">
+      <!-- Delete Button -->
+      <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}" title="Delete Task"><button class="delete-task">✖</button></a>
+
+      <h3 class="task-title">{{ task.title }}</h3>
+
+    <!-- Task Description -->
+    <p class="task-description" onclick="toggleDescription(this)">
+      <span class="short-text">{{ task.description[:60] }}...</span>
+      <span class="full-text" style="display: none;">{{ task.description }}</span>
+    </p>
+
+      <!-- Task Meta Information -->
+      <div class="task-meta">
+        <!-- Created At -->
+        <div class="task-date-time">
+            <label>Created At:</label>
+            <div class="date-time-box">
+                <span class="date">
+                    <span class="year">{{ task.created_at.strftime('%Y') }}</span>-
+                    <span class="month">{{ task.created_at.strftime('%m') }}</span>-
+                    <span class="day">{{ task.created_at.strftime('%d') }}</span>
+                </span>
+                <span class="time">
+                    <span class="hour">{{ task.created_at.strftime('%H') }}</span>:
+                    <span class="minute">{{ task.created_at.strftime('%M') }}</span>
+                </span>
+            </div>
         </div>
-      </header>
-      <p class="priority">{{ task.priority }}</p>
-      <p class="deadline">{{ task.deadline }}</p>
-      <p class="completed">{{ task.completed }}</p>
-      {% if task.description %}
-        <p class="description">{{ task.description }}</p>
-      {% endif %}
-    </article>
+
+        <!-- Deadline -->
+        <div class="task-date-time">
+            <label>Deadline:</label>
+            <div class="date-time-box deadline">
+                <span class="date">
+                    <span class="year">{{ task.deadline.strftime('%Y') }}</span>-
+                    <span class="month">{{ task.deadline.strftime('%m') }}</span>-
+                    <span class="day">{{ task.deadline.strftime('%d') }}</span>
+                </span>
+                <span class="time">
+                    <span class="hour">{{ task.deadline.strftime('%H') }}</span>:
+                    <span class="minute">{{ task.deadline.strftime('%M') }}</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="task-date-time">
+          <label class="countdown-label">Time left:</label>
+          <div class="countdown-timer">
+            <span class="timer" data-deadline="{{ task.deadline }}"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Task Priority -->
+      <span class="task-priority {{ task.priority.lower() }}">{{ task.priority }}</span>
+
+      <!-- Completed Checkbox -->
+      <label class="task-checkbox">
+          <input type="checkbox" {% if task.completed %}checked{% endif %}>
+          <span class="checkmark"></span> Completed
+      </label>
+    </div>
+
     {% if not loop.last %}
       <hr>
     {% endif %}

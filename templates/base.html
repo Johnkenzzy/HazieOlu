@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %} - HazieOlu</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block style %}{% endblock %}
+    <script src="https://kit.fontawesome.com/e677117ef6.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <!-- Header -->
