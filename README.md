@@ -36,7 +36,7 @@ Set up environment variables (optional, if using .env file).
 Run the Flask application:
 
 ```bash
-python3 app.py
+flask run
 ```
 Open your browser and go to: http://127.0.0.1:5000
 
