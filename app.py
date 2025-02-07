@@ -1,26 +1,25 @@
 """Application initialization module"""
 import os
+from dotenv import load_dotenv
 from flask import Flask, render_template, jsonify, request, session
 from models import Base, User, Task, db
 from datetime import timedelta
 
+# Load environment variables
+load_dotenv()
 
-user = os.getenv('USER', 'default_usr')
-psswd = os.getenv('PWD', 'default_pwd')
-host = os.getenv('HOST', 'localhost')
-dbase = os.getenv('DB', 'default_db')
-
-# App initialization and configuration
+# App initialization
 app = Flask(__name__, instance_relative_config=True)
+
+# App configuration
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=7)
 app.config['DEBUG'] = True
-# configure the MYSQL database, relative to the app instance folder
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://{}:{}@{}/{}'.format(user, psswd, host, dbase)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
+# Database initialization
 db.init_app(app)
-
 with app.app_context():
     db.create_all()
 

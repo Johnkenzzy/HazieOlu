@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Create Task{% endblock %}</h1>
+  <h1>{% block title %}{% if task %}Edit{% else %}Create{% endif %} Task{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -11,20 +11,20 @@
       <!-- Task Title -->
       <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" id="title" name="title" placeholder="Enter task title" required>
+        <input type="text" id="title" name="title" placeholder="Enter task title" {% if task %}value="{{ task.title }}"{% endif %} required>
       </div>
 
       <!-- Priority -->
       <div class="form-group">
         <label>Priority</label>
         <div class="priority-group">
-          <input type="radio" id="priority-low" name="priority" value="Low">
+          <input type="radio" id="priority-low" name="priority" value="Low" {% if task and task.priority == 'Low' %}checked{% endif %}>
           <label for="priority-low">Low</label>
 
-          <input type="radio" id="priority-medium" name="priority" value="Medium">
+          <input type="radio" id="priority-medium" name="priority" value="Medium" {% if task and task.priority == 'Medium' %}checked{% endif %}>
           <label for="priority-medium">Medium</label>
 
-          <input type="radio" id="priority-high" name="priority" value="High">
+          <input type="radio" id="priority-high" name="priority" value="High" {% if task and task.priority == 'High' %}checked{% endif %}>
           <label for="priority-high">High</label>
         </div>
       </div>
@@ -33,7 +33,7 @@
       <div class="form-group date-time-group">
         <label for="deadline">Deadline</label>
         <div class="date-time-container">
-            <input type="datetime-local" id="deadline" name="deadline" required>
+            <input type="datetime-local" id="deadline" name="deadline" {% if task %}value="{{ task.deadline.strftime('%Y-%m-%dT%H:%M') }}"{% endif %} required>
             <i class="fa-solid fa-calendar"></i>
         </div>
       </div>
@@ -41,11 +41,15 @@
       <!-- Description -->
       <div class="form-group">
         <label for="message">Description</label>
-        <textarea id="description" name="description" rows="5" placeholder="Describe the task here..."></textarea>
+        <textarea id="description" name="description" rows="5" placeholder="Describe the task here...">{% if task %}{{ task.description }}{% endif %}</textarea>
       </div>
 
       <!-- Submit Button -->
+      {% if not task %}
       <button type="submit" class="submit-button">Add task</button>
+      {% else %}
+      <button type="submit" class="submit-button">Save edits</button>
+      {% endif %}
     </form>
   </div>
  {% endblock %}

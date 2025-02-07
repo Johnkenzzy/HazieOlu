@@ -21,16 +21,3 @@ class Task(BaseModel, db.Model):
     deadline = mapped_column(DateTime, nullable=True)
     completed = mapped_column(Boolean, default=False)
     user_id = mapped_column(Uuid, ForeignKey('users.id'), nullable=False)
-
-
-if __name__ == '__main__':
-    task = Task(title='Study', description='Nil', deadline='6pm', priority='Low')
-    print(task.id)
-    print(task.created_at)
-    print(task.updated_at)
-    print(task.title)
-    print(task.description)
-    print(task.priority)
-    print(task.deadline)
-    print(task.completed)
-    print(task.user_id)

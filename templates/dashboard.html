@@ -5,85 +5,44 @@
 {% endblock %}
 
 {% block header %}
-  <h1>{% block title %}{{ current_user.username }}'s profile{% endblock %}</h1>
+  <h1>{% block title %}Welcome to your profile {{current_user.username}}{% endblock %}</h1>
+  <p>Get productive today!</p>
 {% endblock %}
 
 {% block  content %}
-  <!-- <h1>WELCOME TO YOUR PROFILE {{current_user.username}}</h1> -->
-  <hr>
-  <h1>Available tasks</h1>
   {% if not tasks %}
     <p>No task added yet, add some</p> 
-  {% endif %}
-  {% for task in tasks %}
-    <div class="task-container">
-      <!-- Delete Button -->
-      <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}" title="Delete Task"><button class="delete-task">✖</button></a>
-
-      <h3 class="task-title">{{ task.title }}</h3>
-
-    <!-- Task Description -->
-    <p class="task-description" onclick="toggleDescription(this)">
-      <span class="short-text">{{ task.description[:60] }}...</span>
-      <span class="full-text" style="display: none;">{{ task.description }}</span>
-    </p>
-
-      <!-- Task Meta Information -->
-      <div class="task-meta">
-        <!-- Created At -->
-        <div class="task-date-time">
-            <label>Created At:</label>
-            <div class="date-time-box">
-                <span class="date">
-                    <span class="year">{{ task.created_at.strftime('%Y') }}</span>-
-                    <span class="month">{{ task.created_at.strftime('%m') }}</span>-
-                    <span class="day">{{ task.created_at.strftime('%d') }}</span>
-                </span>
-                <span class="time">
-                    <span class="hour">{{ task.created_at.strftime('%H') }}</span>:
-                    <span class="minute">{{ task.created_at.strftime('%M') }}</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Deadline -->
-        <div class="task-date-time">
-            <label>Deadline:</label>
-            <div class="date-time-box deadline">
-                <span class="date">
-                    <span class="year">{{ task.deadline.strftime('%Y') }}</span>-
-                    <span class="month">{{ task.deadline.strftime('%m') }}</span>-
-                    <span class="day">{{ task.deadline.strftime('%d') }}</span>
-                </span>
-                <span class="time">
-                    <span class="hour">{{ task.deadline.strftime('%H') }}</span>:
-                    <span class="minute">{{ task.deadline.strftime('%M') }}</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Countdown Timer -->
-        <div class="task-date-time">
-          <label class="countdown-label">Time left:</label>
-          <div class="countdown-timer">
-            <span class="timer" data-deadline="{{ task.deadline }}"></span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Task Priority -->
-      <span class="task-priority {{ task.priority.lower() }}">{{ task.priority }}</span>
-
-      <!-- Completed Checkbox -->
-      <label class="task-checkbox">
-          <input type="checkbox" {% if task.completed %}checked{% endif %}>
-          <span class="checkmark"></span> Completed
-      </label>
-    </div>
-
-    {% if not loop.last %}
-      <hr>
+  {% else %}
+ 
+    <!-- Active Tasks -->
+    <h2 style="color:orange">Active Tasks</h2>
+    {% if active %}
+      {% for task in active%}
+        {% include 'taskcard.html' %}
+      {% endfor %}
+    {% else %}
+      <p>You have no active task.</p>
     {% endif %}
-  {% endfor %}
+
+    <!-- Behind Schedule -->
+    <h2 style="color: red;">Behind Schedule</h2>
+    {% if behind %}
+      {% for task in behind %}
+        {% include 'taskcard.html' %}
+      {% endfor %}
+    {% else %}
+      <p>You are all set, no task is behind.</p>
+    {% endif %}
+
+    <!-- Completed Tasks -->
+    <h2 style="color: green;">Completed Tasks</h2>
+    {% if completed %}
+      {% for task in completed %}
+        {% include 'taskcard.html' %}
+      {% endfor %}
+    {% else %}
+      <p>You are yet to complete any task, please do the needful.</p>
+    {% endif %}
+
+  {% endif %}
 {% endblock  %}

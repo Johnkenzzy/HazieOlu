@@ -24,8 +24,10 @@
           </div>
           <ul class="nav-links">
             {% if current_user.username %}
+              <li><a href="{{ url_for('home') }}">Home</a>
+                <li><a href="{{ url_for('users.dashboard') }}">Dashboard</a>
               <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-              <li><a href="{{ url_for('tasks.create_task') }}">Create</a>
+              <li><a href="{{ url_for('tasks.create_task') }}">Add Task</a>
             {% else %}
               <li><a href="{{ url_for('home') }}">Home</a>
               <li><a href="{{ url_for('auth.register') }}">Register</a>
@@ -35,6 +37,7 @@
         </span>
       </nav>
     </header>
+
     <!-- Dynamic contents rendering -->
     <section class="content">
       <header>
@@ -45,42 +48,31 @@
       {% endfor %}
       {% block content %}{% endblock %}
     </section>
+
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
         <!-- About Section -->
         <div class="footer-section">
-          <h4>About Us</h4>
-          <p>We are dedicated to delivering the best products and services to our customers. Your satisfaction is our priority.</p>
-        </div>
-
-        <!-- Navigation Section -->
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
+          <h4>About Me</h4>
+          <p>I am a software engineer and dedicated to delivering quality softwares. Your satisfaction is my priority.</p>
         </div>
 
         <!-- Contact Section -->
         <div class="footer-section">
-          <h4>Contact Us</h4>
-          <p>Email: info@example.com</p>
-          <p>Phone: +123 456 7890</p>
-          <p>Address: 123 Street, City, Country</p>
+          <h4>Contact Me</h4>
+          <p>Email: johnken@gmail.com</p>
+          <p>Address: Abuja, Nigeria</p>
         </div>
 
         <!-- Social Media Section -->
         <div class="footer-section">
-          <h4>Follow Us</h4>
+          <h4>Follow Me</h4>
           <div class="social-icons">
-            <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-            <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
-            <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
-            <a href="#"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="#"><img src="../static/images/facebook_logo.png" alt="Facebook"></a>
+            <a href="#"><img src="../static/images/x_logo.png" alt="X"></a>
+            <a href="#"><img src="../static/images/instagram_logo.jpeg" alt="Instagram"></a>
+            <a href="#"><img src="../static/images/linkedin_logo.png" alt="LinkedIn"></a>
           </div>
         </div>
       </div>

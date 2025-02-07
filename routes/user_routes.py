@@ -11,9 +11,18 @@ users = Blueprint('users', __name__)
 @users.route(f'/dashboard', methods=('GET', 'POST'))
 @login_required
 def dashboard():
-    if request.method == 'POST':
-        pass
+    # tasks = Task.query.filter_by(user_id=current_user.id).all()
+    tasks = Task.query.filter_by(user_id=current_user.id).order_by(Task.deadline).all()
+    active = []
+    behind = []
+    completed = []
+    for task in tasks:
+        if task.deadline > datetime.now() and not task.completed:
+            active.append(task)
+        elif task.deadline < datetime.now() and not task.completed:
+            behind.append(task)
+        else:
+            completed.append(task)
 
-    tasks = Task.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', tasks=tasks)
+    return render_template('dashboard.html', tasks=tasks, active=active, behind=behind, completed=completed)
 

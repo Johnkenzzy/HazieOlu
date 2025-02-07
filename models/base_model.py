@@ -3,9 +3,8 @@
 This module defines the base class for Task Manager App models
 """
 import uuid
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, mapped_column
 from sqlalchemy import String, DateTime, Uuid
-from sqlalchemy.orm import mapped_column
 from datetime import datetime
 
 
@@ -30,11 +29,3 @@ class BaseModel:
         self.updated_at = datetime.now()
         if kwargs:
             self.__dict__.update(kwargs)
-
-
-
-if __name__ == '__main__':
-    instance = BaseModel()
-    print(instance.id)
-    print(instance.created_at)
-    print(instance.updated_at)

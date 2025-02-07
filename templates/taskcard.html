@@ -1,0 +1,88 @@
+<div class="task-container">
+    <!-- Delete Button -->
+    <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}" title="Delete Task"><button class="delete-task">✖</button></a>
+
+    <h3 class="task-title">{{ task.title }}</h3>
+
+  <!-- Task Description -->
+  <p class="task-description" onclick="toggleDescription(this)">
+    <span class="short-text">{{ task.description[:50] }}...</span>
+    <span class="full-text" style="display: none;">{{ task.description }}</span>
+  </p>
+
+    <!-- Task Meta Information -->
+    <div class="task-meta">
+      <!-- Created At -->
+      <div class="task-date-time">
+        {% if task.updated_at != task.created_at %}
+          <label>Updated At:</label>
+          <div class="date-time-box">
+            <span class="date">
+              <span class="year">{{ task.updated_at.strftime('%Y') }}</span>-
+              <span class="month">{{ task.updated_at.strftime('%m') }}</span>-
+              <span class="day">{{ task.updated_at.strftime('%d') }}</span>
+            </span>
+            <span class="time">
+              <span class="hour">{{ task.updated_at.strftime('%H') }}</span>:
+              <span class="minute">{{ task.updated_at.strftime('%M') }}</span>
+            </span>
+          </div>
+        {% else %}
+          <label>Created At:</label>
+          <div class="date-time-box">
+            <span class="date">
+              <span class="year">{{ task.created_at.strftime('%Y') }}</span>-
+              <span class="month">{{ task.created_at.strftime('%m') }}</span>-
+              <span class="day">{{ task.created_at.strftime('%d') }}</span>
+            </span>
+            <span class="time">
+              <span class="hour">{{ task.created_at.strftime('%H') }}</span>:
+              <span class="minute">{{ task.created_at.strftime('%M') }}</span>
+            </span>           
+          </div>
+        {% endif %}  
+      </div>
+
+      <!-- Deadline -->
+      <div class="task-date-time">
+          <label>Deadline:</label>
+          <div class="date-time-box deadline">
+              <span class="date">
+                  <span class="year">{{ task.deadline.strftime('%Y') }}</span>-
+                  <span class="month">{{ task.deadline.strftime('%m') }}</span>-
+                  <span class="day">{{ task.deadline.strftime('%d') }}</span>
+              </span>
+              <span class="time">
+                  <span class="hour">{{ task.deadline.strftime('%H') }}</span>:
+                  <span class="minute">{{ task.deadline.strftime('%M') }}</span>
+              </span>
+          </div>
+      </div>
+
+      <!-- Countdown Timer -->
+      <div class="task-date-time">
+        <label class="countdown-label">Time left:</label>
+        <div class="countdown-timer">
+          <span class="timer" data-deadline="{{ task.deadline }}"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Task Priority -->
+    <span class="task-priority {{ task.priority.lower() }}">{{ task.priority }}</span>
+
+    <!-- Task Completed Checkbox -->
+    <form action="{{ url_for('tasks.update_complete', task_id=task.id) }}" method="POST">
+      <label class="task-checkbox">
+          <input type="checkbox" name="completed" 
+          onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+          <span class="checkmark"></span> Completed
+      </label>
+    </form>
+
+    <!-- Edit Button Container -->
+    <div class="task-buttons">
+      <a href="{{ url_for('tasks.update_task', task_id=task.id) }}" class="edit-btn">✎ Edit</a>
+    </div>
+</div>
